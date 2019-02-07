@@ -11,6 +11,6 @@ To run the project locally, run the following commands:
 git clone https://github.com/nick-huston/make-papa-rich
 cd make-papa-rich
 yarn
-yarn run dev
+yarn start
 ```
 This will launch your default browser at `localhost:3000`.
