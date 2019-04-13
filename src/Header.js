@@ -2,18 +2,18 @@ import React from 'react';
 import {Navbar, Nav, Button, ButtonGroup} from 'react-bootstrap';
 /* TODO: create logged-in header */
 let Header = class extends React.Component {
-    constructor(props) {
+    /* constructor(props) {
         super(props)
 
         this.state = {
             loggedIn : false
         }
-    }
+    } */
 
     render() {
-        if (!this.state.loggedIn) {
+        if (!this.props.loggedIn) {
             return (
-                <Navbar>
+                <Navbar sticky="top">
                     <Navbar.Brand href="#home">Make Papa Rich</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -30,7 +30,7 @@ let Header = class extends React.Component {
         }
         else {
             return (
-                <Navbar>
+                <Navbar sticky="top">
                     <Navbar.Brand href="#home">Make Papa Rich</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
