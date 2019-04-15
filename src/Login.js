@@ -1,5 +1,5 @@
 import React from 'react';
-import logo from './logo.svg';
+import logo from './img/logo.svg';
 import {Navbar, Nav, Button, ButtonGroup, Modal, Form, Alert} from 'react-bootstrap';
 
 let Login = class extends React.Component {
@@ -20,6 +20,8 @@ let Login = class extends React.Component {
           passwordInput : '',
           confirmPasswordInput : '',
           loginFail : false,
+          passwordMismatch : false,
+          error : false,
         //   users: []
         }
     }
@@ -53,6 +55,27 @@ let Login = class extends React.Component {
         this.setState({ forgotPassword: true, loginShow: false })
     }
 
+    handleModal = (event) => {
+        switch (event.target.name) {
+            case "signup":
+                this.setState({ signupShow: true })
+                break;
+            case "login":
+                this.setState({loginShow: true})
+                break;
+            case "forgotPassword":
+                this.setState({forgotPassword: true, loginShow: false})
+                break;
+            default:
+                console.log(event.target.variant)
+                break;
+        }
+    }
+
+    onKey = (event) => {
+        if (event.key === 'Enter') this.handleLoginSubmit()
+    }
+
     handleLoginSubmit = () => {
         /* TODO: salt and hash passwords */
         const email = this.state.emailInput
@@ -61,13 +84,37 @@ let Login = class extends React.Component {
             .then(response => response.json())
             .then(({ data }) => {
                 if (data.length === 1) {
-                    this.setState({loggedIn: true, page: "donation"})
+                    this.setState({loggedIn: true, loginShow: false})
                     console.log(this.state)
                 } else {
                     this.setState({loginFail: true})
                 }
             })
             .catch(err => console.error(err))
+    }
+
+    handleSignupSubmit = () => {
+        const email = this.state.emailInput;
+        const password = this.state.passwordInput;
+        if (!email.includes('@')) {
+            this.setState({badEmail: true})
+        }
+        if (!(password === this.state.confirmPasswordInput)) {
+            this.setState({passwordMismatch: true})
+        }
+        if (!this.state.badEmail && !this.state.passwordMismatch) {
+            fetch('http://localhost:4000/users/add?email='+email+"&password="+password)
+                .then(response => response.json())
+                .then(({ data }) => {
+                    if (data.result === 'successfully added user') {
+                        this.setState({loggedIn: true, signupShow: false})
+                    } else {
+                        this.setState({error: true})
+                    }
+                })
+                .catch(err => console.error(err))
+        }
+        console.log(this.state)
     }
 
     onField = (event) => {
@@ -100,15 +147,15 @@ let Login = class extends React.Component {
                         <Nav.Link href="#about">About</Nav.Link>
                     </Nav>
                     <ButtonGroup>
-                        <Button variant="outline-primary" onClick={this.handleLoginShow}>Log In</Button>
-                        <Button variant="primary" onClick={this.handleSignupShow}>Sign Up</Button>
+                        <Button name="login" variant="outline-primary" onClick={this.handleModal}>Log In</Button>
+                        <Button name="signup" variant="primary" onClick={this.handleModal}>Sign Up</Button>
                     </ButtonGroup>
                     </Navbar.Collapse>
                 </Navbar>
                 <header className="App-header">
                     <img src={logo} className="App-logo" alt="logo" />
                     <p>
-                    <Button variant="primary" onClick={this.handleSignupShow}>Click here to make papa <i>RICH</i></Button>
+                    <Button name="signup" variant="primary" onClick={this.handleModal}>Click here to make papa <i>RICH</i></Button>
                     </p>
                 </header>
                 <Modal show={this.state.loginShow} onHide={this.handleClose}>
@@ -120,17 +167,27 @@ let Login = class extends React.Component {
                         <Form>
                             <Form.Group controlId="formEmail">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control name="email" type="email" placeholder="example@example.com" onChange={this.onField} />
+                            <Form.Control 
+                                name="email" 
+                                type="email" 
+                                placeholder="example@example.com" 
+                                onChange={this.onField}
+                                onKeyPress={this.onKey} />
                             </Form.Group>
                             <Form.Group controlId="formPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control name="password" type="password" placeholder="•••••••" onChange={this.onField} />
+                            <Form.Control 
+                                name="password" 
+                                type="password" 
+                                placeholder="•••••••" 
+                                onChange={this.onField} 
+                                onKeyPress={this.onKey} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
                     <Modal.Footer>
-                        <Button variant="light" onClick={this.handleForgotPassword} className="mr-auto">
-                            <i>Forgot Password</i>
+                        <Button name="forgotPassword" size="sm" variant="light" onClick={this.handleModal} className="mr-auto">
+                            Forgot Password
                         </Button>   
                         <ButtonGroup>
                             <Button variant="secondary" onClick={this.handleClose}>
@@ -146,6 +203,8 @@ let Login = class extends React.Component {
                     <Modal.Header closeButton>
                         <Modal.Title>Welcome to Make Papa Rich!</Modal.Title>
                     </Modal.Header>
+                    <Alert key="passwordMismatchAlert" variant="danger" show={this.state.passwordMismatch}>Both passwords must match</Alert>
+                    <Alert key="badEmailAlert" variant="danger" show={this.state.badEmail}>email address must follow pattern "example@example.com"</Alert>
                     <Modal.Body>
                         <Form>
                             <Form.Group controlId="formEmail">
@@ -167,7 +226,7 @@ let Login = class extends React.Component {
                             <Button variant="secondary" onClick={this.handleClose}>
                                 Close
                             </Button>
-                            <Button variant="primary" onClick={this.handleClose}>
+                            <Button variant="primary" onClick={this.handleLoginSubmit}>
                                 Submit
                             </Button>
                         </ButtonGroup>

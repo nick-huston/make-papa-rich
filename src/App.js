@@ -3,6 +3,7 @@ import { Route, HashRouter, Switch } from 'react-router-dom';
 import './App.css';
 import Login from './Login.js'
 import Donation from './Donation.js'
+import "bootstrap-slider/dist/css/bootstrap-slider.css"
 
 class App extends Component {
   constructor(props) {
@@ -10,7 +11,6 @@ class App extends Component {
 
     this.state = {
       loggedIn : false,
-      page : null
     }
   }
 
@@ -24,22 +24,6 @@ class App extends Component {
       </HashRouter>
     )
   }
-
-  /* render() {
-    console.log(this.state)
-    if (!this.state.loggedIn) {
-      return (
-        <Login />
-      );
-    }
-    else {
-      if (this.state.page === "donation") {
-        return (
-          <Donation />
-        );
-      }
-    }
-  } */
 }
 
 export default App;
