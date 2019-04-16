@@ -55,7 +55,6 @@ let Donation = class extends React.Component {
     }
 
     changeCharity = (event) => {
-        console.log(this.state.charity)
         this.setState({charity: event.target.name})
     }
 

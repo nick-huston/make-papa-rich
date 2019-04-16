@@ -5,11 +5,6 @@ import {Navbar, Nav, Button, ButtonGroup, Modal, Form, Alert } from 'react-boots
 let Login = class extends React.Component {
     constructor(props) {
         super(props)
-        
-        /* this.handleLoginShow = this.handleLoginShow.bind(this);
-        this.handleSignupShow = this.handleSignupShow.bind(this);
-        this.handleClose = this.handleClose.bind(this);
-        this.handleForgotPassword = this.handleForgotPassword.bind(this); */
     
         this.state = {
           loggedIn : false,
@@ -22,7 +17,7 @@ let Login = class extends React.Component {
           loginFail : false,
           passwordMismatch : false,
           error : false,
-        //   users: []
+          badEmail : false
         }
     }
 
@@ -77,7 +72,6 @@ let Login = class extends React.Component {
     }
 
     handleLoginSubmit = async () => {
-        /* TODO: salt and hash passwords */
         const email = this.state.emailInput
         const password = this.state.passwordInput
         await fetch('http://localhost:4000/login?email='+email+"&password="+password)
@@ -92,7 +86,6 @@ let Login = class extends React.Component {
                             password: this.state.passwordInput
                         }
                     })
-                    console.log(this.state)
                 } else {
                     this.setState({loginFail: true})
                 }
@@ -111,22 +104,24 @@ let Login = class extends React.Component {
         }
         if (!this.state.badEmail && !this.state.passwordMismatch) {
             fetch('http://localhost:4000/users/add?email='+email+"&password="+password)
-                .then(response => response.json())
-                .then(({ data }) => {
-                    if (data.result === 'successfully added user') {
-                        this.setState({loggedIn: true, signupShow: false})
-                    } else {
+                .then(response => {
+                    if (response === 'error') {
                         this.setState({error: true})
+                    } else {
+                        this.props.history.push({
+                            pathname: '/donation',
+                            state: {
+                                email: email,
+                                password: password
+                            }
+                        })
                     }
                 })
                 .catch(err => console.error(err))
         }
-        console.log(this.state)
     }
 
     onField = (event) => {
-        // console.log(event.target.name);
-        // console.log(event.target.value);
         switch(event.target.name) {
             case "email":
                 this.setState({emailInput: event.target.value});
@@ -233,7 +228,7 @@ let Login = class extends React.Component {
                             <Button variant="secondary" onClick={this.handleClose}>
                                 Close
                             </Button>
-                            <Button variant="primary" onClick={this.handleLoginSubmit}>
+                            <Button variant="primary" onClick={this.handleSignupSubmit}>
                                 Submit
                             </Button>
                         </ButtonGroup>

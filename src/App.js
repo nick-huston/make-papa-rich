@@ -5,7 +5,6 @@ import Login from './Login.js'
 import Donation from './Donation.js'
 import Settings from './Settings.js'
 import Logout from './Logout.js'
-import "bootstrap-slider/dist/css/bootstrap-slider.css"
 
 class App extends Component {
   constructor(props) {
