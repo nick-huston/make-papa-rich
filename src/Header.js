@@ -13,7 +13,7 @@ let Header = class extends React.Component {
     render() {
         if (!this.props.loggedIn) {
             return (
-                <Navbar sticky="top">
+                <Navbar>
                     <Navbar.Brand href="#home">Make Papa Rich</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
@@ -30,7 +30,7 @@ let Header = class extends React.Component {
         }
         else {
             return (
-                <Navbar sticky="top">
+                <Navbar>
                     <Navbar.Brand href="#home">Make Papa Rich</Navbar.Brand>
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">

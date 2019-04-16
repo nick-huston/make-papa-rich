@@ -18,8 +18,8 @@ class App extends Component {
     return (
       <HashRouter>
         <Switch>
-          <Route path='/login' component={Login} />
-          <Route path='/' component={Donation} />
+          <Route path='/donation' component={Donation} />
+          <Route path='/' component={Login} />
         </Switch>
       </HashRouter>
     )

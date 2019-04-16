@@ -1,6 +1,6 @@
 import React from 'react';
-import logo from './img/logo.svg';
-import {Navbar, Nav, Button, ButtonGroup, Modal, Form, Alert} from 'react-bootstrap';
+import logo from './img/logo.png';
+import {Navbar, Nav, Button, ButtonGroup, Modal, Form, Alert } from 'react-bootstrap';
 
 let Login = class extends React.Component {
     constructor(props) {
@@ -30,14 +30,14 @@ let Login = class extends React.Component {
         this.getUsers();
     } */
 
-    getUsers = _ => {
+    /* getUsers = () => {
         fetch('http://localhost:4000/users')
             .then(response => response.json())
             .then(({ data }) => {
                 this.setState({users: data})
             })
             .catch(err => console.error(err))
-    }
+    } */
     
     handleClose() {
         this.setState({ loginShow: false, signupShow: false, forgotPassword: false, loginFail: false });
@@ -76,15 +76,22 @@ let Login = class extends React.Component {
         if (event.key === 'Enter') this.handleLoginSubmit()
     }
 
-    handleLoginSubmit = () => {
+    handleLoginSubmit = async () => {
         /* TODO: salt and hash passwords */
         const email = this.state.emailInput
         const password = this.state.passwordInput
-        fetch('http://localhost:4000/login?email='+email+"&password="+password)
+        await fetch('http://localhost:4000/login?email='+email+"&password="+password)
             .then(response => response.json())
             .then(({ data }) => {
                 if (data.length === 1) {
                     this.setState({loggedIn: true, loginShow: false})
+                    this.props.history.push({
+                        pathname: '/donation',
+                        state: {
+                            email: this.state.emailInput,
+                            password: this.state.passwordInput
+                        }
+                    })
                     console.log(this.state)
                 } else {
                     this.setState({loginFail: true})
