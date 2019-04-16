@@ -6,10 +6,10 @@ let Login = class extends React.Component {
     constructor(props) {
         super(props)
         
-        this.handleLoginShow = this.handleLoginShow.bind(this);
+        /* this.handleLoginShow = this.handleLoginShow.bind(this);
         this.handleSignupShow = this.handleSignupShow.bind(this);
         this.handleClose = this.handleClose.bind(this);
-        this.handleForgotPassword = this.handleForgotPassword.bind(this);
+        this.handleForgotPassword = this.handleForgotPassword.bind(this); */
     
         this.state = {
           loggedIn : false,
@@ -39,19 +39,19 @@ let Login = class extends React.Component {
             .catch(err => console.error(err))
     } */
     
-    handleClose() {
+    handleClose = () => {
         this.setState({ loginShow: false, signupShow: false, forgotPassword: false, loginFail: false });
     }
 
-    handleLoginShow() {
+    handleLoginShow = () => {
         this.setState({ loginShow: true });
     }
 
-    handleSignupShow() {
+    handleSignupShow = () => {
         this.setState({ signupShow: true });
     }
 
-    handleForgotPassword() {
+    handleForgotPassword = () => {
         this.setState({ forgotPassword: true, loginShow: false })
     }
 

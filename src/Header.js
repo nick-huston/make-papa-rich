@@ -1,5 +1,5 @@
 import React from 'react';
-import {Navbar, Nav, Button, ButtonGroup} from 'react-bootstrap';
+import {Navbar, Nav, NavDropdown, Button, ButtonGroup} from 'react-bootstrap';
 /* TODO: create logged-in header */
 let Header = class extends React.Component {
     /* constructor(props) {
@@ -35,8 +35,12 @@ let Header = class extends React.Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                     <Nav className="mr-auto">
-                        <Nav.Link href="#about">About</Nav.Link>
+                        <Nav.Link href="/about">About</Nav.Link>
                     </Nav>
+                    <NavDropdown title="My Account" id="nav-dropdown">
+                        <NavDropdown.Item href="/settings">Settings</NavDropdown.Item>
+                        <NavDropdown.Item href="/logout">Logout</NavDropdown.Item>
+                    </NavDropdown>
                     </Navbar.Collapse>
                 </Navbar>
             )

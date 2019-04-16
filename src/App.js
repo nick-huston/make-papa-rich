@@ -3,6 +3,8 @@ import { Route, HashRouter, Switch } from 'react-router-dom';
 import './App.css';
 import Login from './Login.js'
 import Donation from './Donation.js'
+import Settings from './Settings.js'
+import Logout from './Logout.js'
 import "bootstrap-slider/dist/css/bootstrap-slider.css"
 
 class App extends Component {
@@ -20,6 +22,8 @@ class App extends Component {
         <Switch>
           <Route path='/donation' component={Donation} />
           <Route path='/' component={Login} />
+          <Route path='/logout' component={Logout} />
+          <Route path='/settings' component={Settings} />
         </Switch>
       </HashRouter>
     )
