@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Route, HashRouter, Switch } from 'react-router-dom';
 import './App.css';
-import Login from './Login.js'
-import Donation from './Donation.js'
-import Settings from './Settings.js'
-import Logout from './Logout.js'
+import Login from './Login.js';
+import Donation from './Donation.js';
+import Settings from './Settings.js';
+import Logout from './Logout.js';
 
 class App extends Component {
   constructor(props) {

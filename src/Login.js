@@ -1,6 +1,7 @@
 import React from 'react';
 import logo from './img/logo.png';
 import {Navbar, Nav, Button, ButtonGroup, Modal, Form, Alert } from 'react-bootstrap';
+import { withRouter } from "react-router-dom";
 
 let Login = class extends React.Component {
     constructor(props) {
@@ -20,19 +21,6 @@ let Login = class extends React.Component {
           badEmail : false
         }
     }
-
-    /* componentDidMount() {
-        this.getUsers();
-    } */
-
-    /* getUsers = () => {
-        fetch('http://localhost:4000/users')
-            .then(response => response.json())
-            .then(({ data }) => {
-                this.setState({users: data})
-            })
-            .catch(err => console.error(err))
-    } */
     
     handleClose = () => {
         this.setState({ loginShow: false, signupShow: false, forgotPassword: false, loginFail: false });
@@ -68,7 +56,10 @@ let Login = class extends React.Component {
     }
 
     onKey = (event) => {
-        if (event.key === 'Enter') this.handleLoginSubmit()
+        if (event.key === 'Enter') {
+            if (this.state.loginShow) this.handleLoginSubmit()
+            else if (this.state.signupShow) this.handleSignupSubmit()
+        }
     }
 
     handleLoginSubmit = async () => {
@@ -93,17 +84,18 @@ let Login = class extends React.Component {
             .catch(err => console.error(err))
     }
 
-    handleSignupSubmit = () => {
+    handleSignupSubmit = async () => {
+        await this.setState({badEmail: false, passwordMismatch: false})
         const email = this.state.emailInput;
         const password = this.state.passwordInput;
         if (!email.includes('@')) {
-            this.setState({badEmail: true})
+            await this.setState({badEmail: true})
         }
         if (!(password === this.state.confirmPasswordInput)) {
-            this.setState({passwordMismatch: true})
+            await this.setState({passwordMismatch: true})
         }
         if (!this.state.badEmail && !this.state.passwordMismatch) {
-            fetch('http://localhost:4000/users/add?email='+email+"&password="+password)
+            await fetch('http://localhost:4000/users/add?email='+email+"&password="+password)
                 .then(response => {
                     if (response === 'error') {
                         this.setState({error: true})
@@ -211,15 +203,15 @@ let Login = class extends React.Component {
                         <Form>
                             <Form.Group controlId="formEmail">
                             <Form.Label>Email address</Form.Label>
-                            <Form.Control name="email" type="email" placeholder="example@example.com" onChange={this.onField} />
+                            <Form.Control name="email" type="email" placeholder="example@example.com" onChange={this.onField} onKeyPress={this.onKey} />
                             </Form.Group>
                             <Form.Group controlId="formPassword">
                             <Form.Label>Password</Form.Label>
-                            <Form.Control name="password" type="password" placeholder="•••••••" onChange={this.onField} />
+                            <Form.Control name="password" type="password" placeholder="•••••••" onChange={this.onField} onKeyPress={this.onKey} />
                             </Form.Group>
                             <Form.Group controlId="formPasswordConfirm">
                             <Form.Label>Confirm password</Form.Label>
-                            <Form.Control name="confirmPassword" type="password" placeholder="•••••••" onChange={this.onField} />
+                            <Form.Control name="confirmPassword" type="password" placeholder="•••••••" onChange={this.onField} onKeyPress={this.onKey} />
                             </Form.Group>
                         </Form>
                     </Modal.Body>
@@ -262,4 +254,5 @@ let Login = class extends React.Component {
     }
 }
 
-export default Login;
+// export default Login;
+export default withRouter(Login);

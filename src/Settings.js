@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Donation.js';
 import { Form } from 'react-bootstrap';
+import { withRouter } from "react-router-dom";
 
 let Settings = class extends React.Component {
     constructor(props) {
@@ -69,4 +70,4 @@ let Settings = class extends React.Component {
     }
 }
 
-export default Settings;
+export default withRouter(Settings);

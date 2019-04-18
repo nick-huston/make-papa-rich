@@ -1,6 +1,13 @@
 import React from 'react';
-import {Navbar, Button, ButtonGroup, DropdownButton, Dropdown} from 'react-bootstrap';
+import {Navbar, Button, ButtonGroup,} from 'react-bootstrap';
+import { withRouter } from "react-router-dom";
+
 let Header = class extends React.Component {
+
+    onClick = (event) => {
+        if (event.target.name === "logout") this.props.history.push('/');
+        if (event.target.name === "settings") this.props.history.push('/settings')
+    }
 
     render() {
         if (!this.props.loggedIn) {
@@ -10,9 +17,6 @@ let Header = class extends React.Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                     <Button className="mr-auto" variant="outline-light">About</Button>
-                    {/* <Nav className="mr-auto">
-                        <Nav.Link href="#about">About</Nav.Link>
-                    </Nav> */}
                     <ButtonGroup inline>
                         <Button variant="outline-primary" onClick={this.handleLoginShow}>Log In</Button>
                         <Button variant="primary" onClick={this.handleSignupShow}>Sign Up</Button>
@@ -28,17 +32,14 @@ let Header = class extends React.Component {
                     <Navbar.Toggle aria-controls="basic-navbar-nav" />
                     <Navbar.Collapse id="basic-navbar-nav">
                     <Button className='mr-auto' variant="outline-dark"><i>About</i></Button>
-                    <DropdownButton title="My Account">
-                        <Dropdown.Item>Settings</Dropdown.Item>
-                        <Dropdown.Item>Logout</Dropdown.Item>
-                    </DropdownButton>
-                    {/* <Nav className="mr-auto">
-                        <Nav.Link href="#about">About</Nav.Link>
-                    </Nav>
-                    <NavDropdown title="My Account" id="nav-dropdown">
-                        <NavDropdown.Item href="#settings">Settings</NavDropdown.Item>
-                        <NavDropdown.Item href="#logout">Logout</NavDropdown.Item>
-                    </NavDropdown> */}
+                    <ButtonGroup inline>
+                        <Button name="settings" variant="outline-primary" onClick={this.onClick}>Settings</Button>
+                        <Button name="logout" variant="primary" onClick={this.onClick}>Logout</Button>
+                    </ButtonGroup>
+                    {/* <DropdownButton title="My Account">
+                        <Dropdown.Item name="settings" as="button" onClick={this.onClick}>Settings</Dropdown.Item>
+                        <Dropdown.Item name="logout" as="button" onClick={this.onClick}>Logout</Dropdown.Item>
+                    </DropdownButton> */}
                     </Navbar.Collapse>
                 </Navbar>
             )
@@ -46,4 +47,4 @@ let Header = class extends React.Component {
     }
 }
 
-export default Header;
+export default withRouter(Header);

@@ -2,6 +2,7 @@ import React from 'react';
 import { Card, CardGroup, Button, Alert, InputGroup, FormControl, Spinner, Image } from 'react-bootstrap';
 import Header from './Header.js';
 import logo1 from './img/ACLU-logo.svg';
+import { withRouter } from "react-router-dom";
 
 let Donation = class extends React.Component {
     constructor(props) {
@@ -36,7 +37,7 @@ let Donation = class extends React.Component {
     donate = async () => {
         this.setState({fetching: true})
         let tickets = [];
-        await fetch('http://localhost:4000/users')
+        await fetch('http://localhost:4000/users?exclude='+this.state.email)
             .then(response => response.json())
             .then(({ data }) => {
                 data.forEach(user => {
@@ -127,7 +128,7 @@ let Donation = class extends React.Component {
                                 </Button>
                             </InputGroup.Append>
                         </InputGroup>
-                        <Alert dismissible variant={this.state.success ? "success" : "warning"} show={this.state.showAlert}>
+                        <Alert variant={this.state.success ? "success" : "warning"} show={this.state.showAlert}>
                             <Alert.Heading>{this.state.success ? "Donation made!" : "Error in making donation"}</Alert.Heading>
                         </Alert>
                     </div>
@@ -137,4 +138,4 @@ let Donation = class extends React.Component {
     }
 }
 
-export default Donation;
+export default withRouter(Donation);
